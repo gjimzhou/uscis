@@ -80,23 +80,17 @@ def get_result(case_num,prefix,verbose):
 	return info
 
 def get_batch_pair(total_num,case_s,case_e):
-	batch = {}
 	info = []
-	for i in range(total_num / CPU_CORES):
-		s = CPU_CORES * i + case_s
-		e = s + CPU_CORES - 1
-		batch = {
-			"start":s,
-			"end": e
-		}
-		info.append(batch)
+	for s in range(case_s, case_e + 1, CPU_CORES):
+		e = min(s + CPU_CORES - 1, case_e)
+		info.append({"start": s, "end": e})
 	return info
 
 def query_website(ns,batch_result,prefix,lock,verbose):
 	local_result = []
 	if verbose:
 		print('s is %d, e is %d' % (int(batch_result['start']), int(batch_result['end'])))
-	for case_n in range(int(batch_result['start']),int(batch_result['end'])):
+	for case_n in range(int(batch_result['start']), int(batch_result['end']) + 1):
 		local_result.append(get_result(case_n,prefix,verbose))
 
 	lock.acquire()
@@ -145,8 +139,6 @@ def main():
 	end = case_numberic + args.batch
 
 	total_num = end - start + 1
-	rmnder = total_num % CPU_CORES
-
 	if total_num > 20:
 		batch_result = get_batch_pair(total_num,start,end)
 
@@ -159,10 +151,8 @@ def main():
 
 		final_result = ns.df
 
-		# for i in range(end - rmnder + 1,end):
-		# 	reminder_result.append(get_result(i,prefix))
 	else:
-		for i in range(start,end):
+		for i in range(start, end + 1):
 			final_result.append(get_result(i,prefix,args.verbose))
 
 	json_type = json.dumps(final_result,indent=4)
