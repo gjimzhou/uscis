@@ -35,7 +35,7 @@ def main():
 	now = datetime.datetime.now()
 	print(now.strftime("%Y-%m-%d"))
 	with open('data.yml', 'r') as f:
-		doc = yaml.load(f)
+		doc = yaml.safe_load(f)
 
 	for i in doc:
 		if 'Case Was Received' not in i['Status']:
