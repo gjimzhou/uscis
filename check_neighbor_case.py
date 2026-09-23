@@ -158,8 +158,8 @@ def main():
 	json_type = json.dumps(final_result,indent=4)
 	now = datetime.datetime.now()
 	with open('data-%s.yml'%now.strftime("%Y-%m-%d"), 'w') as outfile:
-		yaml.dump(yaml.load(json_type), outfile, allow_unicode=True)
-	print(yaml.dump(yaml.load(json_type), allow_unicode=True))
+		yaml.safe_dump(final_result, outfile, allow_unicode=True, sort_keys=False)
+	print(yaml.safe_dump(final_result, allow_unicode=True, sort_keys=False))
 
 if __name__ == "__main__":
 	main()
