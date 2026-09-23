@@ -37,9 +37,10 @@ def main():
 	with open('data.yml', 'r') as f:
 		doc = yaml.safe_load(f)
 
-	for i in doc:
-		if 'Case Was Received' not in i['Status']:
-			print(i)
+	for case_group in doc or []:
+		for case_no, info in case_group.items():
+			if 'Case Was Received' not in info.get('Status', ''):
+				print(case_no, info)
 
 if __name__ == "__main__":
 	main()
