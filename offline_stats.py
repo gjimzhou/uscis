@@ -19,7 +19,6 @@ import re
 import sys
 import os
 import pycurl, json
-import cStringIO
 import argparse
 import json
 import yaml
@@ -34,14 +33,13 @@ from bs4 import BeautifulSoup
 
 def main():
 	now = datetime.datetime.now()
-	print now.strftime("%Y-%m-%d")
-	exit(0)
+	print(now.strftime("%Y-%m-%d"))
 	with open('data.yml', 'r') as f:
 		doc = yaml.load(f)
 
 	for i in doc:
 		if 'Case Was Received' not in i['Status']:
-			print i
+			print(i)
 
 if __name__ == "__main__":
 	main()
